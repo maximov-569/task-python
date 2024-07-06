@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: "src/Dockerfile"
+    container_name: services
+    env_file: .env.docker
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_services
+
+  postgres_services:
+    container_name: postgres_services
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    env_file: .env.docker
+    volumes:
+      - postgres-data-services:/var/lib/postgresql/data
+
+volumes:
+  postgres-data-services:
